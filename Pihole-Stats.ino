@@ -7,7 +7,6 @@
 
 Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
 
-
 WiFiClient client; // wifi client object
 
 const char* host         = "192.168.0.1";
@@ -183,7 +182,7 @@ void loop() {
     HTTPClient http;
     //HTTPClient http2;
     
-    Serial.print("[HTTP] begin...\n");
+    Serial.printf("[HTTP] begin...\n");
     http.begin("http://"+ String(host) +"/admin/api.php"); //HTTP
     //http2.begin("http://"+ String(host2) +"/admin/api.php"); //HTTP)
 
@@ -195,7 +194,7 @@ void loop() {
         if(httpCode == HTTP_CODE_OK) {
             String payload = http.getString();
             //String payload2 = http2.getString();         
-            Serial.println(payload);
+            //Serial.printf("%s", payload);
 
             DynamicJsonDocument doc(2048);
             //DynamicJsonDocument doc2(2048);
@@ -203,8 +202,8 @@ void loop() {
             //DeserializationError error2 = deserializeJson(doc2, payload2);
 
       if (error) {
-        Serial.print("deserializeJson() failed: ");
-        Serial.println(error.c_str());
+        Serial.printf("deserializeJson() failed: ");
+        Serial.printf("%s", error);
         return;
       }
             long domains_being_blocked = doc["domains_being_blocked"]; // 101832
@@ -218,35 +217,35 @@ void loop() {
 
             tft.setCursor(4, 5);
             tft.setTextSize(1);
-            tft.println("DNS Queries Today: ");
+            tft.printf("DNS Queries Today: ");
             tft.setCursor(4, 14);
             tft.setTextSize(2); 
-            tft.println(String(dns_queries_today));
+            tft.printf("%i", dns_queries_today);
             //tft.setCursor(4, 30);
             //tft.println(String(dns_queries_today2));
             // 
             tft.setCursor(125, 5);
             tft.setTextSize(1);
-            tft.println("Ads Blocked Today: ");
+            tft.printf("Ads Blocked Today: ");
             tft.setCursor(125, 14);
             tft.setTextSize(2); 
-            tft.println(String(ads_blocked_today));
+            tft.printf("%i", ads_blocked_today);
             //tft.setCursor(125, 30);
             //tft.println(String(ads_blocked_today2));
             //
             tft.setCursor(4, 72);
             tft.setTextSize(1);   
-            tft.println("Domains Blocked: ");
+            tft.printf("Domains Blocked: ");
             tft.setCursor(4, 82);
             tft.setTextSize(2); 
-            tft.println(String(domains_being_blocked));
+            tft.printf("%li", domains_being_blocked);
             //
             tft.setCursor(125, 72);
             tft.setTextSize(1);    
-            tft.println("Percentage of Ads: ");
+            tft.printf("Percentage of Ads: ");
             tft.setCursor(125, 82);
             tft.setTextSize(2); 
-            tft.println(String(ads_percentage_today) + "%");
+            tft.printf("%f %%", ads_percentage_today);
             //tft.setCursor(125, 98);
             //tft.println(String(ads_percentage_today2) + "%");
             //
@@ -261,7 +260,7 @@ void loop() {
 
 int Start_WiFi(const char* ssid, const char* password){
     int connAttempts = 0;
-    Serial.println("\r\nConnecting to: "+String(ssid));
+    Serial.printf("Connecting to: %s\n", ssid);
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED ) {
         delay(500);
@@ -269,9 +268,8 @@ int Start_WiFi(const char* ssid, const char* password){
         if(connAttempts > 20) return -5;
         connAttempts++;
         }
-    Serial.println("WiFi connected\r\n");
-    Serial.print("IP address: ");
-    Serial.println(WiFi.localIP());
+    Serial.printf("WiFi connected\n");
+    Serial.printf("IP address: %s", WiFi.localIP());
     return 1;
 }
 
