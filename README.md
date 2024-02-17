@@ -8,7 +8,7 @@ change the hosts and SSID/PASS to connect to your Wifi and Pihole servers.
 const char* host         = "192.168.0.1";
 // uncomment for second host
 //const char* host2        = "192.168.0.2";
-const char* ssid         = "SSIS";
+const char* ssid         = "SSID";
 const char* password     = "PASS";
 
 Display has a handy background to separate the stats. It's really not that exciting, just something for me to learn ESP32. 
